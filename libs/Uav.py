@@ -36,6 +36,7 @@ def takeOff_API(*swarm_args, **kwargs):
 
 def flyToHeight_API(*swarm_args, **kwargs):
 	vehicle_name = f'{kwargs["agent"]}_{kwargs["id"]}'
+	height = swarm_args[0] + kwargs["id"]*1.5
 	Lock:threading.Lock = kwargs["wrapper"].locks[vehicle_name]
 	client:airsim.MultirotorClient = kwargs["wrapper"].clients[vehicle_name]
 
@@ -44,10 +45,10 @@ def flyToHeight_API(*swarm_args, **kwargs):
 		pos = client.simGetVehiclePose(vehicle_name=vehicle_name)
 		Lock.release()
 		time.sleep(0.5)
-		if abs(pos.position.z_val - (-swarm_args[0])) < MIN_THRESHOLD:
+		if abs(pos.position.z_val - (-height)) < MIN_THRESHOLD:
 			break
 		Lock.acquire()
-		res = client.moveToPositionAsync(pos.position.x_val, pos.position.y_val, -swarm_args[0], 5, vehicle_name=vehicle_name)
+		res = client.moveToPositionAsync(pos.position.x_val, pos.position.y_val, -height, 5, vehicle_name=vehicle_name)
 		Lock.release()
 		time.sleep(0.5)
 

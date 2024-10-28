@@ -61,13 +61,25 @@ TD3_fly_circle.one_round = fly_circle_one_round
 
 
 def cnnRecognize(*swarm_args, **kwargs):
-	import random
-	weights = [0.3, 0.7]  # 设置权重，对应 True 和 False 的概率
-	options = [True, False]
-	res = random.choices(options, weights, k=1)[0]
+	# import random
+	# weights = [0.05, 0.95]  # 设置权重，对应 True 和 False 的概率
+	# options = [True, False]
+	# res = random.choices(options, weights, k=1)[0]
+	# import datetime
+	# print(str(datetime.datetime.now()) + " " + str(res))
+	# return res
 	import datetime
-	print(str(datetime.datetime.now()) + " " + str(res))
-	return res
+    # 使用一个静态变量来记录函数被调用的次数
+	if not hasattr(cnnRecognize, "counter"):
+		cnnRecognize.counter = 0  # 初始化计数器
+	cnnRecognize.counter += 1  # 每次调用时增加计数器
+    # 当计数器达到30时返回True，并重置计数器
+	if cnnRecognize.counter == 30:
+		print(str(datetime.datetime.now()) + " " + "True")
+		cnnRecognize.counter = 0  # 重置计数器
+		return True
+	print(str(datetime.datetime.now()) + " " + "False")
+	return False
 
 class Cover_Env():
 	def __init__(self) -> None:

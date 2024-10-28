@@ -82,7 +82,7 @@ Behavior search_Behavior(h, net){
 	 }
 	@goal{
 		found_cnt = getFindCount_Action();
-		$ found_cnt >= 5
+		$ found_cnt >= 3
 	}
 	@routine{
 		/* 单机覆盖算法的完整调用 */
@@ -99,9 +99,10 @@ Behavior search_Behavior(h, net){
 	}
 }
 
-Behavior pickUp_delivery_Behavior() {
+Behavior pickUp_delivery_Behavior(h) {
 	@init{
 		takeOff_Action();
+		flyToHeight_Action(h);
 		pickUp_Action();
 	}
 	@goal{}
@@ -120,7 +121,7 @@ Behavior drop_goHome_Behavior() {
 	}
 }
 
-Task earthquake_relief({agtA[stA~edA], agtB[stB~edB]}, city_map){
+Task earthquake_relief({agtA[stA~edA], agtB[stB~edB]}){
 	@init{
 		search_height = 30;
 		deliver_height = 50;
@@ -139,14 +140,14 @@ Task earthquake_relief({agtA[stA~edA], agtB[stB~edB]}, city_map){
 	||
 	{
 		order agtB[stB~edB] {
-			pickUp_delivery_Behavior();
+			pickUp_delivery_Behavior(deliver_height);
 			drop_goHome_Behavior();
 		}
 	}
 }
 
 Main {
-	Agent search_drone 1;
+	Agent search_drone 5;
 	Agent cargo_drone 2;
-	earthquake_relief({search_drone[0~1], cargo_drone[0~2]}, Map.testMap);
+	earthquake_relief({search_drone[0~3], cargo_drone[0~2]});
 }

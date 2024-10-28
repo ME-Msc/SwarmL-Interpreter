@@ -1,0 +1,36 @@
+Action add(a, b) {
+    return a + b;
+}
+
+Agent drone{
+    add;
+}
+
+Behavior add_Behavior() {
+    @init{
+        m = 0;
+        n = 2;
+        sum = 0;
+    }
+    @goal{
+        $ sum == 2
+    }
+    @routine{
+        sum = add(m, n);
+    }
+}
+
+Task add_Task({agtA[stA~stB]}){
+    @init{}
+    @goal{}
+    @routine{
+        order agtA[stA~stB]{
+            add_Behavior();
+        }
+    }
+}
+
+Main {
+    Agent drone 1;
+    add_Task({drone[0~1]});
+}

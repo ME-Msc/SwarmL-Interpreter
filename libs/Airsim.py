@@ -22,7 +22,7 @@ class AirsimWrapper(Wrapper):
 			self.clients["GlobalCamera"].confirmConnection()
 			self.clients["GlobalCamera"].enableApiControl(True)
 			self.clients["GlobalCamera"].takeoffAsync().join()
-			self.clients["GlobalCamera"].moveToPositionAsync(0, 0, -100, 10).join()
+			self.clients["GlobalCamera"].moveToPositionAsync(0, 0, -180, 10).join()
 			self.clients["GlobalCamera"].hoverAsync().join()
 
 			message = (
